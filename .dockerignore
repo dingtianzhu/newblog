@@ -1,0 +1,25 @@
+# 排除不需要复制到镜像中的文件和目录
+
+# 忽略所有 .git 目录
+.git
+
+# 忽略所有 .gitignore 文件
+.gitignore
+
+# 忽略 node_modules 目录，因为它通常很大并且包含了很多不必要的文件
+node_modules
+
+# 忽略临时文件和编辑器生成的文件
+*.tmp
+*.log
+*.swp
+.vscode/
+.idea/
+
+# 忽略测试相关的文件和目录
+tests/
+test/
+
+# 忽略文档相关的文件和目录
+docs/
+doc/
