@@ -1,5 +1,5 @@
 import './assets/css/global.css'
-
+import '@libs/markdown/css/markdown.css'
 import { createApp } from 'vue'
 import { pinia } from './stores/index'
 
