@@ -3,10 +3,15 @@ import { createElementBlock } from './createBlockElement'
 import { renderToFragment } from './render'
 import { moveCursorToEnd, restoreSelection, saveSelection, getCurrentNode } from './cursor'
 import type { El } from './model'
+import { isInline } from './helps'
 
 // 处理元素
-export const setElement = (content: string, el: El, node: Node) => {
-  const match = content.match(el.reg)
+export const setElement = (el: El, node: Node) => {
+  const cNode = getCurrentNode()
+  const content = cNode?.textContent
+  const contents = cNode!.parentElement?.innerHTML
+  if (!content) return
+  const match = content?.match(el.reg)
   if (!match) return
   const fragment = document.createDocumentFragment()
   const parent = node.parentNode
@@ -17,10 +22,12 @@ export const setElement = (content: string, el: El, node: Node) => {
     renderToFragment(vNode, fragment)
     endNode = fragment.firstChild
   } else if (el.type === 'inline') {
+    if (isInline(cNode!.parentElement!)) return
     let lastIndex = 0
     let renderedElements: ChildNode | null = null
     while (true) {
       const result = el.reg.exec(content)
+      console.log('🚀 ~ setElement ~ result:', result)
       if (!result) break
 
       if (result.index > lastIndex) {
@@ -47,15 +54,21 @@ export const setElement = (content: string, el: El, node: Node) => {
 
     moveCursorToEnd(renderedElements!)
   } else if (el.type === 'com') {
+    const reg = contents?.replace(el.reg, '')
+    console.log('🚀 ~ setElement ~ contents:', contents)
+
+    console.log('🚀 ~ setElement ~ reg:', reg)
     const ulVNode = h(
       el.el,
       { class: el.class },
-      match.map((m) => createElementBlock('li', 'mk-li-class', m.slice(2) || '\u200B'))
+      [createElementBlock('li', 'mk-li-class', '')]
       // h('li', { class: 'mk-li-class', tabindex: '0' }, m.slice(2) || '\u200B')) // 创建 li
     )
-    renderToFragment(ulVNode, fragment)
-    endNode = fragment.firstChild
-    fragment.appendChild(endNode!)
+    const newLi = renderToFragment(ulVNode, fragment)?.firstChild as HTMLElement
+    newLi.innerHTML = reg![0]
+    node.replaceChild(fragment, node.firstChild!)
+    // endNode = fragment.firstChild
+    // fragment.appendChild(endNode!)
   }
   if (el.type !== 'inline' && endNode && parent) {
     node.replaceChild(fragment, node.firstChild!)

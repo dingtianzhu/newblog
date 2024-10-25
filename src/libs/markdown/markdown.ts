@@ -16,18 +16,17 @@ const processContent = (e: Event, content: string) => {
     handleCodeBlock(type, '', e)
     // }
   } else {
-    elList.forEach((el) => setElement(content, el, e.target as Node))
+    elList.forEach((el) => setElement(el, e.target as Node))
   }
 }
 
 const mkInput = (e: any) => {
   if (isComposing.value) return
   const target = e.target as HTMLElement | null
-  // console.log('🚀 ~ mkInput ~ target:', target)
   if (!target) return
-  // const content = (target as HTMLElement).textContent
   const currentNode = getCurrentNode()
-  const content = (currentNode as HTMLElement).textContent
+  const content = (currentNode?.parentElement as HTMLElement).innerHTML
+  console.log('🚀 ~ mkInput ~ content:', content)
   content && processContent(e, content)
 }
 

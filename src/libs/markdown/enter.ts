@@ -3,7 +3,7 @@ import { renderToFragment } from './render'
 import { createElementBlock } from './createBlockElement'
 import { mapTextToHtml, isInline } from './helps'
 
-import { getCurrentNode, saveSelection, getCursorPosition, setToStart } from './cursor'
+import { getCurrentNode, getCursorPosition, setToStart } from './cursor'
 
 export const handleCustomEnter = (event: Event) => {
   //如果中文输入没有结束则回车不会被组织

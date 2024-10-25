@@ -22,7 +22,7 @@ const handleCompositionEnd = (e: Event) => {
 </script>
 <template>
   <div id="container">
-    <div ref="container" contenteditable="true" class="placeholder" tabindex="0" @input="handleInput"
+    <div ref="container" contenteditable="true" class="placeholder custom-dot-cursor" tabindex="0" @input="handleInput"
       @compositionstart="handleCompositionStart" @compositionend="handleCompositionEnd" @keydown="handleKeydown">
     </div>
   </div>

@@ -1,3 +1,33 @@
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/* .custom-typing-cursor {
+  caret-color: #333;
+  border-right: 2px solid #333;
+  animation: blink 0.7s step-end infinite;
+  font-weight: bold;
+} */
+
+/* .custom-dot-cursor::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-top:10px;
+  background-color: #555;
+  border-radius: 50%;
+  position: absolute;
+  animation: blink 1s step-end infinite;
+} */
 .placeholder {
   box-sizing: border-box;
   border: none;
