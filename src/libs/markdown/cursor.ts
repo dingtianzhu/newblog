@@ -85,36 +85,7 @@ export const restoreSelection = (containerEl: HTMLElement, savedSel: any) => {
   selection?.removeAllRanges()
   selection?.addRange(range)
 }
-// // 获取光标位置的函数
-// export const getCursorPosition = (containerEl: HTMLElement) => {
-//   const selection = window.getSelection()
 
-//   // 检查是否存在有效的选择范围
-//   if (selection && selection.rangeCount > 0) {
-//     // 获取当前的 Range 对象
-//     const range = selection.getRangeAt(0)
-
-//     // 创建一个新的 Range 对象作为副本
-//     const preRange = range.cloneRange()
-
-//     // 设置副本的范围为整个容器内容
-//     preRange.selectNodeContents(containerEl)
-
-//     // 将副本的结束位置设置为当前光标的起始位置
-//     preRange.setEnd(range.startContainer, range.startOffset)
-
-//     // 光标在整个文本内容中的位置
-//     const start = preRange.toString().length
-
-//     // 如果存在选中内容，计算结束位置
-//     const end = start + range.toString().length
-
-//     return { start, end }
-//   }
-
-//   // 如果没有选择范围，则返回 null
-//   return null
-// }
 export const getCurrentNode = () => {
   const selection = window.getSelection()
   if (!selection?.rangeCount) return null
@@ -141,31 +112,7 @@ export const getCursorPosition = (containerEl: HTMLElement) => {
 
     // 获取光标位置在内容中的字符索引
     const start = preSelectionRange.toString().length
-    const textContent = containerEl.textContent
-
-    const htmlContent = containerEl.innerHTML // 获取容器内的 HTML 内容
-
-    // 计算解析后的内容长度和输入位置的对应关系
-    const mapping = []
-    let currentIndex = 0
-    for (let i = 0; i < htmlContent.length; i++) {
-      if (htmlContent[i] === '<') {
-        // 处理标签的开头
-        while (htmlContent[i] !== '>' && i < htmlContent.length) {
-          i++
-        }
-        // 处理标签结束
-        mapping.push(currentIndex) // 保存标签之前的字符位置
-      } else {
-        currentIndex++
-        mapping.push(currentIndex)
-      }
-    }
-
-    return {
-      start: mapping[start] || 0, // 将获取到的 start 转换为 HTML 中的实际位置
-      end: mapping[start + range.toString().length] || 0
-    }
+    return start - 1
   }
-  return null
+  return 0
 }

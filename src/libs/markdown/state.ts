@@ -82,3 +82,30 @@ export const elList: El[] = [
 ]
 export const isComposing = ref(false)
 export const copyText = ref('复制代码')
+export const inlineElements = [
+  'span',
+  'strong',
+  'b',
+  'em',
+  'i',
+  'mark',
+  'small',
+  'del',
+  'ins',
+  'sub',
+  'sup',
+  'a',
+  'cite',
+  'q',
+  // 'img',
+  // 'audio',
+  // 'video',
+  // 'canvas',
+  'code',
+  'kbd',
+  // 'pre', // 在某些情况下也可以视为行内元素
+  'label'
+  // 'button',
+  // 'input',
+  // 'select'
+]
