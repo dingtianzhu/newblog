@@ -39,7 +39,7 @@
   /* 设置行高 */
   color: #333;
   /* 设置文本颜色 */
-  margin: 10px 0;
+  margin: 2px 0;
 }
 
 
@@ -73,6 +73,7 @@
 .delBorder{
   border: none;
   outline: none;
+  margin: 2px 0;
 }
 
 
@@ -94,7 +95,7 @@
   line-height: 1.2;
   border: none;
   outline: none;
-  font-size: 2.5rem;
+  font-size: 2.0rem;
   /* 调整标题的字体大小 */
   font-weight: bold;
   /* 粗体显示 */
@@ -111,7 +112,7 @@
 }
 
 .h2class {
-  font-size: 2em;
+  font-size: 1.8em;
   /* 32px */
   font-weight: bold;
   border: none;
@@ -122,7 +123,7 @@
 }
 
 .h3class {
-  font-size: 1.75em;
+  font-size: 1.6em;
   /* 28px */
   font-weight: bold;
   border: none;
@@ -133,7 +134,7 @@
 }
 
 .h4class {
-  font-size: 1.5em;
+  font-size: 1.45em;
   /* 24px */
   font-weight: bold;
   border: none;

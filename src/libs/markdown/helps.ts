@@ -22,7 +22,6 @@ export const mapTextToHtml = (text: string, html: string): number[] => {
   return mapping
 }
 export const isInline = (node: HTMLElement) => {
-  // const inlineTagNames = ['code', 'span', 'strong', 'i', 'em', 'b']
   if (node.nodeType === Node.ELEMENT_NODE) {
     const element = node as HTMLElement
     if (inlineElements.includes(element.tagName.toLowerCase())) {

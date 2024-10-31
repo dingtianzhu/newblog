@@ -26,7 +26,6 @@ const mkInput = (e: any) => {
   if (!target) return
   const currentNode = getCurrentNode()
   const content = (currentNode?.parentElement as HTMLElement).innerHTML
-  console.log('🚀 ~ mkInput ~ content:', content)
   content && processContent(e, content)
 }
 

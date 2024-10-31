@@ -17,28 +17,28 @@ export const elList: El[] = [
     class: 'h2class'
   },
   {
-    reg: /^###\ /,
+    reg: /(^|\n)(###)\s+(.*?)(?=\n|$)/,
     el: 'h3',
     type: 'block',
     ck: () => {},
     class: 'h3class'
   },
   {
-    reg: /^####\ /,
+    reg: /(^|\n)(####)\s+(.*?)(?=\n|$)/,
     el: 'h4',
     type: 'block',
     ck: () => {},
     class: 'h4class'
   },
   {
-    reg: /^#####\ /,
+    reg: /(^|\n)(#####)\s+(.*?)(?=\n|$)/,
     el: 'h5',
     type: 'block',
     ck: () => {},
     class: 'h5class'
   },
   {
-    reg: /^######\ /,
+    reg: /(^|\n)(######)\s+(.*?)(?=\n|$)/,
     el: 'h6',
     type: 'block',
     ck: () => {},

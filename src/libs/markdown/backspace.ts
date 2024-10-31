@@ -1,9 +1,15 @@
 import { removeCurrentNode } from './removeNode'
+import { isCursorLeftEmpty, getCurrentNode } from './cursor'
 export const handleCustomBackspace = (event: Event) => {
-  // else if (e instanceof KeyboardEvent && e.key === 'Backspace') {
-  //   // 处理 `Backspace`，如果当前节点为空则删除
-  //   if (!range?.startContainer.textContent!.slice(0, range?.endOffset)) {
-  //     removeCurrentNode(e, '')
-  //   }
-  // }
+  const isEmpty = isCursorLeftEmpty()
+  console.log('🚀 ~ handleCustomBackspace ~ isEmpty:', isEmpty)
+  if (isEmpty) {
+    const currentNode = getCurrentNode()
+    let node: HTMLElement
+    if (currentNode?.nodeType === Node.ELEMENT_NODE) node = currentNode as HTMLElement
+    else node = currentNode?.parentNode as HTMLElement
+    const html = node?.innerHTML || ''
+    console.log('🚀 ~ handleCustomBackspace ~ html:', html)
+    removeCurrentNode(event, html)
+  }
 }

@@ -1,11 +1,10 @@
-import { h, ref, nextTick } from 'vue'
+import { h } from 'vue'
 import { highlightCode } from './highLight'
 import { removeCurrentNode } from './removeNode'
 import { renderToFragment } from './render'
 import { mkCompositionEnd, mkCompositionStart } from './markdown'
-import { restoreSelection, saveSelection } from './cursor'
+import { restoreSelection, saveSelection, moveCursorToEnd, getCurrentNode } from './cursor'
 export const handleCodeBlock = (type: string, codeContent: string, e: Event) => {
-  // const codeContent = '' // 合并多行代码
   const node = e.target as Node
   const highlightedCode = highlightCode(codeContent) // 高亮代码
   const vNode = h('div', { class: 'code-block-class' }, [
@@ -65,14 +64,10 @@ const handleCopyClick = (e: Event) => {
   navigator.clipboard
     .writeText(text!)
     .then(() => {
-      // copyText.value = '已复制'
       const button = e.target as HTMLElement
       button.innerText = '已复制'
-      // copyText.value =
-
       // 一段时间后恢复“复制代码”按钮文本
       setTimeout(() => {
-        // copyText.value = '复制代码'
         button.innerText = '复制代码'
       }, 2000) // 2秒后恢复
     })
@@ -80,19 +75,9 @@ const handleCopyClick = (e: Event) => {
       console.error('复制失败:', error)
     })
 }
-export const mkBlackCodeInput = (e: Event, str: string = '</span>') => {
+export const mkBlackCodeInput = (e: Event) => {
   const el = e.target as HTMLElement
   const content = el.textContent
-  const lastSpanIndex = content?.lastIndexOf(str) || 0
-  // 根据最后一个 </span> 分割字符串
-  if (lastSpanIndex !== -1) {
-    const part1 = content?.substring(0, lastSpanIndex + 7) // 包含 </span> 的部分
-    const part2 = content?.substring(lastSpanIndex + 7) || '' // 剩余部分
-    const res = highlightCode(part2)
-    el.innerHTML = part1 + res
-    return
-  }
-
   const res = highlightCode(content!)
   const savedSelection = saveSelection(el)
   el.innerHTML = res

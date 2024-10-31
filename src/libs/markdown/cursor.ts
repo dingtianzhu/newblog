@@ -1,34 +1,14 @@
+import { inlineElements } from './state'
 // 移动光标到指定元素的末尾
 export const moveCursorToEnd = (element: Node) => {
   const range = document.createRange()
   const selection = window.getSelection()
   range.setStartAfter(element)
-  range.collapse(true)
+  range.collapse(false)
   selection?.removeAllRanges()
   selection?.addRange(range)
 }
-//重置光标位置
-export const rePosition = (
-  target: any,
-  previousSibling: HTMLElement,
-  newNode: HTMLElement,
-  text: string = '',
-  type: boolean = false
-) => {
-  if (previousSibling) previousSibling.focus()
 
-  if (!type) {
-    const savedSelection = saveSelection(newNode)
-    newNode.textContent! += text
-    if (savedSelection) {
-      restoreSelection(newNode, savedSelection) // 恢复光标位置
-    }
-  }
-  if (target && target.parentNode) {
-    // 从父节点中移除目标元素
-    target.parentNode.removeChild(target)
-  }
-}
 //保存光标位置
 export const saveSelection = (containerEl: HTMLElement) => {
   const selection = window.getSelection()
@@ -115,4 +95,65 @@ export const getCursorPosition = (containerEl: HTMLElement) => {
     return start - 1
   }
   return 0
+}
+//判断光标左侧内容是否为空
+export const isCursorLeftEmpty = () => {
+  const selection = window.getSelection()
+  if (!selection?.rangeCount) return false
+
+  const range = selection.getRangeAt(0)
+  const { startContainer, startOffset } = range
+  const inlineElement = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+  // 如果光标在文本节点内
+  if (startContainer.nodeType === Node.TEXT_NODE) {
+    const leftText = startContainer.textContent?.slice(0, startOffset)
+    const previousSibling = startContainer.previousSibling
+    console.log(0.2)
+    if (leftText?.trim() === '' && previousSibling) {
+      if (inlineElements.includes((previousSibling as HTMLElement).tagName.toLowerCase())) {
+        return false // 行内元素视为不为空
+      }
+    } else if (leftText?.trim() === '' && !previousSibling) {
+      console.log(0.1)
+      if (
+        inlineElement.includes((startContainer.parentNode as HTMLElement).tagName.toLowerCase())
+      ) {
+        return false // 行内元素视为不为空
+      }
+    }
+  }
+
+  // 如果光标在元素节点的起始位置，检查左侧元素
+  console.log(startContainer, Node.ELEMENT_NODE, startOffset)
+  if (startContainer.nodeType === Node.ELEMENT_NODE && startOffset === 0) {
+    // 检查是否为行内元素
+
+    if (inlineElement.includes((startContainer as HTMLElement).tagName.toLowerCase())) {
+      return false // 行内元素视为不为空
+    }
+    return true // 其他元素视为为空
+  }
+  // 向上遍历节点直到找到文本节点
+  let textBeforeCursor = ''
+  let currentNode = startContainer
+
+  while (currentNode && currentNode !== document.body) {
+    if (currentNode.nodeType === Node.TEXT_NODE) {
+      textBeforeCursor = currentNode.textContent?.slice(0, startOffset) + textBeforeCursor
+      break
+    } else {
+      // 检查当前节点的前一个兄弟节点
+      if (currentNode.previousSibling) {
+        currentNode = currentNode.previousSibling
+        while (currentNode && currentNode.lastChild) {
+          currentNode = currentNode.lastChild
+        }
+      } else {
+        currentNode = currentNode.parentNode as Node
+      }
+    }
+  }
+
+  // 如果光标左侧的内容为空，则返回 true
+  return textBeforeCursor.trim() === ''
 }
