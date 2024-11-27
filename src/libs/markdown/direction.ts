@@ -1,7 +1,22 @@
-import { isCursorLeftEmpty, getCurrentNode, moveCursorToEnd } from './cursor'
-export const handleCustomArrowUp = (event: Event) => {}
+import { isCursorLeftEmpty, getCursorRight } from './cursor'
+import { moveCursorToPreviousEditable } from './removeNode'
+export const handleCustomArrowUp = (event: Event) => {
+  const target = event.target as HTMLElement
+  const previousSibling = target?.previousSibling as HTMLElement
+  if (previousSibling) {
+    event.preventDefault()
+    moveCursorToPreviousEditable(previousSibling)
+  }
+}
 
-export const handleCustomArrowDown = (event: Event) => {}
+export const handleCustomArrowDown = (event: Event) => {
+  const target = event.target as HTMLElement
+  const nextSibling = target?.nextSibling as HTMLElement
+  if (nextSibling) {
+    event.preventDefault()
+    nextSibling.focus()
+  }
+}
 
 export const handleCustomArrowLeft = (event: Event) => {
   if (isCursorLeftEmpty()) {
@@ -9,11 +24,18 @@ export const handleCustomArrowLeft = (event: Event) => {
     const previousSibling = target?.previousSibling as HTMLElement
     if (previousSibling) {
       event.preventDefault()
-      previousSibling?.focus()
-      const preNode = previousSibling.lastChild as Node
-      moveCursorToEnd(preNode)
+      moveCursorToPreviousEditable(previousSibling)
     }
   }
 }
 
-export const handleCustomArrowRight = (event: Event) => {}
+export const handleCustomArrowRight = (event: Event) => {
+  if (!getCursorRight()) {
+    const target = event.target as HTMLElement
+    const nextSibling = target?.nextSibling as HTMLElement
+    if (nextSibling) {
+      event.preventDefault()
+      nextSibling.focus()
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { handleCustomEnter } from './enter'
 import { handleCustomBackspace } from './backspace'
+import { handleCustomTab } from './tab'
 import {
   handleCustomArrowUp,
   handleCustomArrowDown,
@@ -8,7 +9,7 @@ import {
 } from './direction'
 export const resetInputKeydown = (event: Event) => {
   const { key, ctrlKey, shiftKey, altKey, metaKey } = event as KeyboardEvent
-  console.log('🚀 ~ resetInputKeydown ~ key:', key)
+  // console.log('🚀 ~ resetInputKeydown ~ key:', key)
   switch (key) {
     case 'Enter':
       handleCustomEnter(event)
@@ -30,6 +31,7 @@ export const resetInputKeydown = (event: Event) => {
       break
     case 'Tab':
       event.preventDefault()
+      handleCustomTab(event)
       break
     case 'a':
       if (ctrlKey) {

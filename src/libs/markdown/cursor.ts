@@ -103,35 +103,26 @@ export const isCursorLeftEmpty = () => {
 
   const range = selection.getRangeAt(0)
   const { startContainer, startOffset } = range
-  const inlineElement = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
   // 如果光标在文本节点内
+
   if (startContainer.nodeType === Node.TEXT_NODE) {
     const leftText = startContainer.textContent?.slice(0, startOffset)
     const previousSibling = startContainer.previousSibling
-    console.log(0.2)
     if (leftText?.trim() === '' && previousSibling) {
       if (inlineElements.includes((previousSibling as HTMLElement).tagName.toLowerCase())) {
-        return false // 行内元素视为不为空
-      }
-    } else if (leftText?.trim() === '' && !previousSibling) {
-      console.log(0.1)
-      if (
-        inlineElement.includes((startContainer.parentNode as HTMLElement).tagName.toLowerCase())
-      ) {
         return false // 行内元素视为不为空
       }
     }
   }
 
   // 如果光标在元素节点的起始位置，检查左侧元素
-  console.log(startContainer, Node.ELEMENT_NODE, startOffset)
   if (startContainer.nodeType === Node.ELEMENT_NODE && startOffset === 0) {
+    console.log('🚀 ~ isCursorLeftEmpty ~ nodeType:sadfasdfsad', startContainer.nodeType)
     // 检查是否为行内元素
-
-    if (inlineElement.includes((startContainer as HTMLElement).tagName.toLowerCase())) {
-      return false // 行内元素视为不为空
-    }
     return true // 其他元素视为为空
+  }
+  if (startContainer.nodeType === Node.ELEMENT_NODE) {
+    return false
   }
   // 向上遍历节点直到找到文本节点
   let textBeforeCursor = ''
@@ -156,4 +147,17 @@ export const isCursorLeftEmpty = () => {
 
   // 如果光标左侧的内容为空，则返回 true
   return textBeforeCursor.trim() === ''
+}
+
+export const getCursorRight = () => {
+  const selection = window.getSelection()
+  if (!selection?.rangeCount) return false
+
+  const range = selection.getRangeAt(0)
+  const { startContainer, startOffset } = range
+  if (startContainer.nodeType === Node.TEXT_NODE) {
+    const rightText = startContainer.textContent?.slice(startOffset)
+    if (rightText?.trim()) return rightText
+  }
+  return false
 }

@@ -4,14 +4,16 @@ export const highlightCode = (code: string, type: string = 'javascript') => {
   let str: RegExp
   switch (type) {
     case 'javascript':
-      str = /(const |let |var  |function |if |else |return |for |while |class |import |export )/g
+      str =
+        /(?<=^|;|\s)(const|let|var|function|if|else|return|for|while|class|import|export)(?=\s|$)/g
       break
     default:
-      str = /(const |let |var  |function |if |else |return |for |while |class |import |export )/g
+      str =
+        /(?<=^|;|\s)(const|let|var|function|if|else|return|for|while|class|import|export)(?=\s|$)/g
   }
 
   return code
     .replace(str, '<span class="mk-keyword">$1</span>')
-    .replace(/([a-zA-Z_]\w*)\s*\(/g, '<span class="mk-function">$1</span>(')
+    .replace(/\b([a-zA-Z_]\w*)\s*\(/g, '<span class="mk-function">$1</span>(')
     .replace(/(\/\/|#).*/g, '<i class="mk-comment">$1</i>')
 }
